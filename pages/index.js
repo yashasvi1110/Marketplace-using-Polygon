@@ -23,7 +23,7 @@ export default function Home() {
 
     /*
     *  map over items returned from smart contract and format 
-    *  them as well as fetch their token metadata
+    *  them as well as fetch their token metadata(Wallet)
     */
     const items = await Promise.all(data.map(async i => {
       const tokenUri = await contract.tokenURI(i.tokenId)
@@ -44,14 +44,14 @@ export default function Home() {
     setLoadingState('loaded') 
   }
   async function buyNft(nft) {
-    /* needs the user to sign the transaction, so will use Web3Provider and sign it */
+    /* to retrive data from the user to sign in , so will use Web3Provider and sign it */
     const web3Modal = new Web3Modal()
     const connection = await web3Modal.connect()
     const provider = new ethers.providers.Web3Provider(connection)
     const signer = provider.getSigner()
     const contract = new ethers.Contract(marketplaceAddress, NFTMarketplace.abi, signer)
 
-    /* user will be prompted to pay the asking proces to complete the transaction */
+    /* user will be move forward to pay the asking proces to complete the transaction */
     const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')   
     const transaction = await contract.createMarketSale(nft.tokenId, {
       value: price
